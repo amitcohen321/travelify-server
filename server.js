@@ -37,7 +37,11 @@ mongoose
 		useNewUrlParser: true
 	})
 	.then(result => {
-		app.listen(4000)
+		const server = app.listen(4000)
+		const io = require("./socket").initSocket(server)
+		io.on("connection", socket => {
+			console.log("[SOCKET] client connected")
+		})
 		console.log("Server is running at " + port)
 	})
 	.catch(err => console.log(err))

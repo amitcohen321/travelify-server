@@ -9,5 +9,7 @@ router.post("/update-user-settings", controller.updateUserSettings)
 router.post("/update-user-itinerary", controller.updateUserItinerary)
 router.get("/search-buddies/:userId", controller.searchBuddies)
 router.post("/send-email", controller.sendEmail)
+router.post("/realtime/user-joined", controller.realTimeUserJoined)
+router.post("/realtime/user-left", controller.realTimeUserLeft)
 
 module.exports = router

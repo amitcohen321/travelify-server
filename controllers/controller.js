@@ -1,3 +1,6 @@
+const socket = require("../socket")
+const connectedUsers = require("./realtime")
+
 ;({compareAsc} = require("date-fns"))
 const User = require("../models/user")
 const Itinerary = require("../models/itinerary")
@@ -142,7 +145,7 @@ exports.searchBuddies = (req, res, next) => {
 
 exports.sendEmail = (req, res, next) => {
 	const msg = {
-		to: req.body.recipient,
+		to: "amitcohen929@gmail.com",
 		from: req.body.sender,
 		subject: "You've got a new message from Travelify!",
 		// text: req.body.message,
@@ -160,7 +163,6 @@ exports.sendEmail = (req, res, next) => {
 	req.sgMail
 		.send(msg)
 		.then(response => {
-			console.log(response)
 			res.send("email_sent")
 			console.log("message sent")
 		})
@@ -191,4 +193,24 @@ function areDatesParallel(start1, end1, start2, end2) {
 	) {
 		return true
 	}
+}
+
+exports.realTimeUserJoined = (req, res, next) => {
+	const userWithLocation = req.body
+	connectedUsers.addUser(userWithLocation)
+	console.log("user joined", userWithLocation)
+	socket.getSocket().emit("user_joined", connectedUsers.getUsers())
+	res.end()
+}
+
+exports.realTimeUserLeft = (req, res, next) => {
+	const userWithLocation = req.body
+	const filteredArr = connectedUsers
+		.getUsers()
+		.filter(user => user.user.id !== userWithLocation.user.id)
+	connectedUsers.setUsers(filteredArr)
+	socket.getSocket().emit("user_left", connectedUsers.getUsers())
+	console.log(connectedUsers)
+	console.log("user left: ", req.body)
+	res.end()
 }
