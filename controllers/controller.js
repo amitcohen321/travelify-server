@@ -8,7 +8,7 @@ const Itinerary = require("../models/itinerary")
 
 exports.checkServerHealth = (req, res, next) => {
 	console.log("request has arrived to server!")
-	res.end()
+	res.send("server is working")
 }
 
 exports.getUserByFbUserId = (req, res, next) => {
