@@ -61,7 +61,6 @@ exports.createUser = (req, res, next) => {
 }
 
 exports.updateUserSettings = (req, res, next) => {
-	console.log(req.body.preferneces.radius)
 	const errors = validationResult(req).array()
 	if (errors.length === 0) {
 		// no validation errors
@@ -82,7 +81,6 @@ exports.updateUserSettings = (req, res, next) => {
 		// console.log(errors[0].msg)
 		console.log(errors)
 		return res.status(422).send({errors: errors})
-		// return res.status(422).send({error: errors[0].msg})
 	}
 }
 
@@ -155,8 +153,9 @@ exports.searchBuddies = (req, res, next) => {
 }
 
 exports.sendEmail = (req, res, next) => {
+	console.log(req.body)
 	const msg = {
-		to: "amitcohen929@gmail.com",
+		to: req.body.recipient,
 		from: req.body.sender,
 		subject: "You've got a new message from Travelify!",
 		// text: req.body.message,
