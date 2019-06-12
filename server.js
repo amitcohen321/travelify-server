@@ -37,7 +37,7 @@ mongoose
 		useNewUrlParser: true
 	})
 	.then(result => {
-		const server = app.listen(4000)
+		const server = app.listen(process.env.PORT || 4000)
 		const io = require("./socket").initSocket(server)
 		io.on("connection", socket => {
 			console.log("[SOCKET] client connected")

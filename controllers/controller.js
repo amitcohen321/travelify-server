@@ -1,5 +1,6 @@
 const socket = require("../socket")
 const connectedUsers = require("./realtime")
+const {validationResult} = require("express-validator/check")
 
 ;({compareAsc} = require("date-fns"))
 const User = require("../models/user")
@@ -14,7 +15,7 @@ exports.getUserByFbUserId = (req, res, next) => {
 	User.find({"loginInfo.fbUserId": req.params.fbUserId})
 		.populate("itinerary")
 		.then(user => {
-			res.send(user)
+			res.status(200).send(user)
 		})
 		.catch(err => console.log(err))
 }
@@ -52,7 +53,7 @@ exports.createUser = (req, res, next) => {
 			})
 				.save()
 				.then(newUser => {
-					res.send(newUser._id) // send back to client
+					res.status(201).send(newUser._id) // send back to client
 				})
 				.catch(err => console.log(err))
 		})
@@ -60,19 +61,29 @@ exports.createUser = (req, res, next) => {
 }
 
 exports.updateUserSettings = (req, res, next) => {
-	User.findById(req.body.userInfo.id)
-		.then(user => {
-			user.about = req.body.userInfo.about
-			user.language.mainLang = req.body.userInfo.language.mainLang
-			user.language.speaksEnglish = req.body.userInfo.language.speaksEnglish
-			user.preferneces.radius = req.body.preferneces.radius
-			user.preferneces.discoverable = req.body.preferneces.discoverable
-			return user
-				.save()
-				.then(user => res.send(user))
-				.catch(err => console.log(err))
-		})
-		.catch(err => console.log(err))
+	console.log(req.body.preferneces.radius)
+	const errors = validationResult(req).array()
+	if (errors.length === 0) {
+		// no validation errors
+		User.findById(req.body.userInfo.id)
+			.then(user => {
+				user.about = req.body.userInfo.about
+				user.language.mainLang = req.body.userInfo.language.mainLang
+				user.language.speaksEnglish = req.body.userInfo.language.speaksEnglish
+				user.preferneces.radius = req.body.preferneces.radius
+				user.preferneces.discoverable = req.body.preferneces.discoverable
+				return user
+					.save()
+					.then(user => res.status(204).send(user))
+					.catch(err => console.log(err))
+			})
+			.catch(err => console.log(err))
+	} else {
+		// console.log(errors[0].msg)
+		console.log(errors)
+		return res.status(422).send({errors: errors})
+		// return res.status(422).send({error: errors[0].msg})
+	}
 }
 
 exports.updateUserItinerary = (req, res, next) => {
@@ -85,7 +96,7 @@ exports.updateUserItinerary = (req, res, next) => {
 						.save()
 						.then(itinerary => {
 							console.log("itinerary updated for user")
-							res.send(itinerary)
+							res.status(200).send(itinerary)
 						})
 						.catch(err => console.log(err))
 				})
@@ -139,7 +150,7 @@ exports.searchBuddies = (req, res, next) => {
 
 	// TODO: CHANGE IT TO WORK without settimeout function
 	setTimeout(function() {
-		res.send(usersThatMatch)
+		res.status(200).send(usersThatMatch)
 	}, 3000)
 }
 
@@ -163,7 +174,7 @@ exports.sendEmail = (req, res, next) => {
 	req.sgMail
 		.send(msg)
 		.then(response => {
-			res.send("email_sent")
+			res.status(200).send("email_sent")
 			console.log("message sent")
 		})
 		.catch(err => {
@@ -210,7 +221,6 @@ exports.realTimeUserLeft = (req, res, next) => {
 		.filter(user => user.user.id !== userWithLocation.user.id)
 	connectedUsers.setUsers(filteredArr)
 	socket.getSocket().emit("user_left", connectedUsers.getUsers())
-	console.log(connectedUsers)
 	console.log("user left: ", req.body)
 	res.end()
 }
