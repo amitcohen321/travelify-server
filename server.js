@@ -8,11 +8,10 @@ const MONGO_DB_CONNECT_STRING = require("./consts").MONGO_DB_CONNECT_STRING
 
 //email
 const sgMail = require("@sendgrid/mail")
-sgMail.setApiKey(process.env.SENDGRID_API_KEY)
+sgMail.setApiKey(process.env.SENDGRID_API_KEY || SENDGRID_API_KEY)
 
 // CONSTS
 const app = express()
-const port = process.env.port || "4000"
 
 // MIDDLEWARE
 app.use((req, res, next) => {
@@ -33,7 +32,7 @@ app.use(routes)
 // DB
 const User = require("./models/user")
 mongoose
-	.connect(process.env.MONGO_DB_CONNECT_STRING, {
+	.connect(process.env.MONGO_DB_CONNECT_STRING || MONGO_DB_CONNECT_STRING, {
 		useNewUrlParser: true
 	})
 	.then(result => {
@@ -42,6 +41,6 @@ mongoose
 		io.on("connection", socket => {
 			console.log("[SOCKET] client connected")
 		})
-		console.log("Server is running at " + port)
+		console.log("Server is running at " + process.env.PORT || 4000)
 	})
 	.catch(err => console.log(err))
