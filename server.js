@@ -8,7 +8,7 @@ const MONGO_DB_CONNECT_STRING = require("./consts").MONGO_DB_CONNECT_STRING
 
 //email
 const sgMail = require("@sendgrid/mail")
-sgMail.setApiKey(SENDGRID_API_KEY)
+sgMail.setApiKey(process.env.SENDGRID_API_KEY)
 
 // CONSTS
 const app = express()
@@ -33,7 +33,7 @@ app.use(routes)
 // DB
 const User = require("./models/user")
 mongoose
-	.connect(MONGO_DB_CONNECT_STRING, {
+	.connect(process.env.MONGO_DB_CONNECT_STRING, {
 		useNewUrlParser: true
 	})
 	.then(result => {
