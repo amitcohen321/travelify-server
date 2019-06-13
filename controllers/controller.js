@@ -4,7 +4,7 @@ const {validationResult} = require("express-validator/check")
 
 ;({compareAsc} = require("date-fns"))
 const User = require("../models/user")
-// const Itinerary = require("../models/itinerary")
+const Itinerary = require("../models/Itinerary")
 
 exports.checkServerHealth = (req, res, next) => {
 	console.log("request has arrived to server!")
