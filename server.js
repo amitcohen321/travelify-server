@@ -2,7 +2,7 @@
 const express = require("express")
 const mongoose = require("mongoose")
 const routes = require("./routes/routes")
-const cors = require("cors")
+var cors = require("cors")
 const SENDGRID_API_KEY = require("./consts").SENDGRID_API_KEY
 const MONGO_DB_CONNECT_STRING = require("./consts").MONGO_DB_CONNECT_STRING
 
@@ -21,11 +21,11 @@ app.use((req, res, next) => {
 	res.setHeader("Access-Control-Allow-Headers", "Content-Type,Authorization")
 	next()
 })
+app.use(cors())
 app.use((req, res, next) => {
 	req.sgMail = sgMail
 	next()
 })
-app.use(cors())
 app.use(express.json())
 app.use(express.urlencoded({extended: false}))
 app.use(routes)
