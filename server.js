@@ -6,8 +6,6 @@ var cors = require("cors")
 const SENDGRID_API_KEY = require("./consts").SENDGRID_API_KEY
 const MONGO_DB_CONNECT_STRING = require("./consts").MONGO_DB_CONNECT_STRING
 
-const port = process.env.PORT || 4000
-
 //email
 const sgMail = require("@sendgrid/mail")
 sgMail.setApiKey(SENDGRID_API_KEY)
@@ -39,7 +37,7 @@ mongoose
 		useNewUrlParser: true
 	})
 	.then(result => {
-		const server = app.listen(port)
+		const server = app.listen(process.env.PORT || 4000)
 		const io = require("./socket").initSocket(server)
 		io.on("connection", socket => {
 			console.log("[SOCKET] client connected")
