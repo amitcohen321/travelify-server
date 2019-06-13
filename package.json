@@ -8,6 +8,9 @@
 		"start": "node server.js",
 		"start-dev": "nodemon server.js"
 	},
+	"engines": {
+		"node": "8.11.3"
+	},
 	"author": "Amit Cohen",
 	"license": "ISC",
 	"dependencies": {
