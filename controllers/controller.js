@@ -7,7 +7,7 @@ const User = require("../models/user")
 const Itinerary = require("../models/Itinerary")
 
 exports.checkServerHealth = (req, res, next) => {
-	console.log("request has arrived to server!")
+	console.log("request has arrived to server")
 	res.send("server is working")
 }
 

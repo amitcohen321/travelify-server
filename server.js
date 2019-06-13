@@ -41,6 +41,6 @@ mongoose
 		io.on("connection", socket => {
 			console.log("[SOCKET] client connected")
 		})
-		console.log("Server is running at " + process.env.PORT || 4000)
+		console.log("Server is running")
 	})
 	.catch(err => console.log(err))
