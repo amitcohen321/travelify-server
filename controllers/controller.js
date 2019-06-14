@@ -209,7 +209,7 @@ function areDatesParallel(start1, end1, start2, end2) {
 exports.realTimeUserJoined = (req, res, next) => {
 	const userWithLocation = req.body
 	connectedUsers.addUser(userWithLocation)
-	console.log("user joined", userWithLocation)
+	console.log("user joined real time")
 	socket.getSocket().emit("user_joined", connectedUsers.getUsers())
 	res.end()
 }
@@ -221,6 +221,6 @@ exports.realTimeUserLeft = (req, res, next) => {
 		.filter(user => user.user.id !== userWithLocation.user.id)
 	connectedUsers.setUsers(filteredArr)
 	socket.getSocket().emit("user_left", connectedUsers.getUsers())
-	console.log("user left: ", req.body)
+	console.log("user left real time")
 	res.end()
 }
