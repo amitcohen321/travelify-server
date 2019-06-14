@@ -22,6 +22,7 @@ exports.getUserByFbUserId = (req, res, next) => {
 
 exports.createUser = (req, res, next) => {
 	console.log("server: creating user and itinerary")
+	console.log(req.body.fbProfileLink)
 
 	new Itinerary({
 		destinations: req.body.destinations
@@ -103,9 +104,9 @@ exports.updateUserItinerary = (req, res, next) => {
 		.catch(err => console.log(err))
 }
 
+// TODO: Refactor this function
 exports.searchBuddies = (req, res, next) => {
 	const usersThatMatch = []
-
 	User.findById(req.params.userId)
 		.then(user => {
 			Itinerary.findById(user.itinerary)
@@ -184,7 +185,7 @@ exports.sendEmail = (req, res, next) => {
 
 // UTIL FUNCS
 function areDatesParallel(start1, end1, start2, end2) {
-	//TODO: shrink it
+	//TODO: shrink this logic
 	if (
 		compareAsc(new Date(start1), new Date(start2)) === 0 ||
 		compareAsc(new Date(end1), new Date(end2)) === 0 ||

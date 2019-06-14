@@ -13,12 +13,6 @@ router.post(
 		body("userInfo.about")
 			.isLength({min: 10})
 			.withMessage("About field has to be longer than 10 chars"),
-		// body("userInfo.language.mainLang")
-		// 	.matches("english", "french", "german", "hebrew", "spanish")
-		// .withMessage("Spoken Language not supported"),
-		// body("userInfo.language.speaksEnglish")
-		// 	.matches("true", "false")
-		// 	.withMessage("Speaks English invalid value"),
 		body("preferneces.radius")
 			.isNumeric()
 			.withMessage("Radius value is not numeric")
@@ -27,12 +21,6 @@ router.post(
 	],
 	controller.updateUserSettings
 )
-
-//req.body.userInfo.about
-//req.body.userInfo.language.mainLang
-//req.body.userInfo.language.speaksEnglish
-//req.body.preferneces.radius
-//req.body.preferneces.discoverable
 
 router.post("/update-user-itinerary", controller.updateUserItinerary)
 router.get("/search-buddies/:userId", controller.searchBuddies)
