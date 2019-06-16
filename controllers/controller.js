@@ -22,7 +22,7 @@ exports.getUserByFbUserId = (req, res, next) => {
 
 exports.createUser = (req, res, next) => {
 	console.log("server: creating user and itinerary")
-	console.log(req.body.fbProfileLink)
+	console.log("hi amit createUser", req.body)
 
 	new Itinerary({
 		destinations: req.body.destinations
@@ -86,6 +86,7 @@ exports.updateUserSettings = (req, res, next) => {
 }
 
 exports.updateUserItinerary = (req, res, next) => {
+	console.log("hi amit:", req.body.userInfo.id)
 	User.findById(req.body.userInfo.id)
 		.then(user => {
 			Itinerary.findById(user.itinerary)
